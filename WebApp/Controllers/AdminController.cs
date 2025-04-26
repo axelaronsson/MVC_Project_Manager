@@ -1,0 +1,18 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebApp.Controllers;
+
+public class AdminController : Controller
+{
+    public IActionResult Index()
+    {
+        return View();
+    }
+
+    [Authorize]
+    public IActionResult Clients()
+    {
+        return View();
+    }
+}

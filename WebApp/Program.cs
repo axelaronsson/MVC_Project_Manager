@@ -1,15 +1,43 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using WebApp.Data;
+using WebApp.Models;
+using WebApp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("LocalDB")));
+
+builder.Services.AddIdentity<AppUser, IdentityRole>(x =>
+    {
+        x.Password.RequiredLength = 8;
+        x.User.RequireUniqueEmail = true;
+        x.SignIn.RequireConfirmedEmail = false;
+
+
+    })
+    .AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(x =>
+{
+    x.LoginPath = "/auth/signin";
+    x.LogoutPath = "/auth/signout";
+    x.AccessDeniedPath = "/auth/denied";
+    x.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    x.SlidingExpiration = true;
+});
+
+builder.Services.AddScoped<UserService>();
+
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
