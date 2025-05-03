@@ -5,17 +5,20 @@ using WebApp.Services;
 
 namespace WebApp.Controllers;
 
+
 public class AuthController(UserService userService, SignInManager<AppUser> signInManager) : Controller
 {
     private readonly UserService _userService = userService;
     private readonly SignInManager<AppUser> _signInManager = signInManager;
 
+    [Route("/SignUp")]
     public IActionResult SignUp()
     {
         return View();
     }
 
     [HttpPost]
+    [Route("/SignUp")]
     public async Task<IActionResult> SignUp(UserSignUpForm form)
     {
         if (!ModelState.IsValid)
@@ -35,6 +38,7 @@ public class AuthController(UserService userService, SignInManager<AppUser> sign
         return View(result);
     }
 
+    [Route("/SignIn")]
     public IActionResult SignIn(string returnUrl = "/")
     {
         ViewBag.ReturnUrl = returnUrl;
@@ -43,6 +47,7 @@ public class AuthController(UserService userService, SignInManager<AppUser> sign
     }
 
     [HttpPost]
+    [Route("/SignIn")]
     public async Task<IActionResult> SignIn(UserSignInForm form, string returnUrl = "/")
     {
 

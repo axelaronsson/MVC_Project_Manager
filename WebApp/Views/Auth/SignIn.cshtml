@@ -4,29 +4,41 @@
 	ViewData["Title"] = "Sign In";
 }
 
-<div id="signin" class="container">
-	<form id="signin-form" asp-action="SignIn" asp-controller="Auth" method="post" novalidate>
+<div id="signin">
+	<div class="wrapper">
+		<h1 class="heading">Login</h1>
+		<div class="form-container">
+			<form id="signin-form" asp-action="SignIn" asp-controller="Auth" method="post" novalidate>
+				<input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
 
+				<div class="form-group">
+					<label asp-for="Email"></label>
+					<input asp-for="Email" />
+				</div>
 
-		<input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+				<div class="form-group">
+					<label asp-for="Password"></label>
+					<input asp-for="Password" />
+				</div>
 
-		<div class="form-group">
-			<label asp-for="Email"></label>
-			<input asp-for="Email" />
+				<div class="form-group">
+					<div class="notification error">
+						@ViewBag.ErrorMessage
+					</div>
+				</div>
+
+				<div class="checkbox-wrapper">
+					<input type="checkbox" />
+					<span>Remember Me</span>
+				</div>
+
+				<button type="submit" class="btn btn-login btn-primary">Log In</button>
+			</form>
 		</div>
-
-		<div class="form-group">
-			<label asp-for="Password"></label>
-			<input asp-for="Password" />
+		<div class="form-link">
+			<p>Don't have an account?</p>
+			<a asp-controller="Auth" asp-action="SignUp">Sign Up</a>
 		</div>
-
-		<div class="form-group">
-			<div class="notification error">
-				@ViewBag.ErrorMessage
-			</div>
-		</div>
-
-		<button type="submit" class="btn btn-login btn-primary">Sign In</button>
-	</form>
+	</div>
 </div>
 

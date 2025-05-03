@@ -21,8 +21,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(x =>
 
 builder.Services.ConfigureApplicationCookie(x =>
 {
-    x.LoginPath = "/auth/signin";
-    x.LogoutPath = "/auth/signout";
+    x.LoginPath = "/signin";
+    x.LogoutPath = "/signout";
     x.AccessDeniedPath = "/auth/denied";
     x.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     x.SlidingExpiration = true;
