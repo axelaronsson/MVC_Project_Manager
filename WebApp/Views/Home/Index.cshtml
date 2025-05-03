@@ -1,11 +1,16 @@
-﻿@{
+﻿@model IEnumerable<ProjectModel>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div id="projects-view">
     <div class="project-container">
         <div class="sidebar">
-            <h2>Sidebar</h2>
+            <img class="logo" src="/logosvg.svg" />
+            <div class="btn-background">
+
+            </div>
+            @* <button>Projects</button> *@
         </div>
 
         <div class="workspace">
@@ -13,14 +18,87 @@
                 <div class="handle-account">
                     <img src="/Setting.png" />
                     <span></span>
-                    <img src="/avatar.png" />
+                    <img id="user-btn" src="/avatar.png" />
+                </div>
+                <div class="account-options">
+                    <div class="menu-item">
+                        <img class="card-avatar" src="/avatar.png" />
+                        <p>User Name</p>
+                    </div>
+                    <div class="logout">
+                        <img src="/Logout.png" />
+                        <a>Logout</a>
+                    </div>
                 </div>
             </div>
+
             <div class="add-section">
                 <h2 class="heading">Projects</h2>
                 <button class="add-btn"><img class="plus" src="/Plus.svg" /> Add Project</button>
             </div>
 
+            <div class="filter-bar">
+                <a class="filter-tab highlighted">ALL [0]</a>
+                <a class="filter-tab">STARTED [0]</a>
+                <a class="filter-tab">COMPLETED [0]</a>
+            </div>
+            <div class="outlet">
+                @foreach (var product in Model)
+                {
+                    <div class="card-wrapper">
+                        <div class="project-card">
+                            <div class="top-info">
+                                <img src="/Image.svg" />
+                                <div>
+                                    <h6>@product.Name</h6>
+                                    <p>@product.Company</p>
+                                </div>
+                            </div>
+                            <p class="description">@product.Description</p>
+                        </div>
+                    </div>
+                }
+                @{
+                    var remainder = Model.Count() % 3;
+                    var missingCards = 3 - remainder;
+
+                    for (int i = 0; i < missingCards; i++)
+                    {
+                        <div class="project-card dummy">
+                            <div class="top-info">
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        const userBtn = document.querySelector("#user-btn");
+        const accountCard = document.querySelector(".account-options");
+        accountCard.style.display = "none"
+        userBtn.addEventListener("click", () => {
+            if (accountCard.style.display === "none") {
+                accountCard.style.display = "block";
+            } else {
+                accountCard.style.display = "none"
+            }
+        });
+
+        const highLight = (e) => {
+            filterAnchors.forEach(el => el.classList.remove("highlighted"));
+            console.log(e.target);
+            e.target.classList.add("highlighted");
+        }
+
+        const filterAnchors = document.querySelectorAll(".filter-tab");
+        filterAnchors.forEach(el => el.addEventListener("click", highLight));
+        // filterAnchors.map(anc => anc.addEventListener("click", highLight));
+        
+
+
+    </script>
+}

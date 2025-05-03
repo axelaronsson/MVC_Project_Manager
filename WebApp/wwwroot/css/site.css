@@ -24,7 +24,7 @@ span, p {
     /*padding: 0px 2px*/
 }
 
-button {
+button, .menu-item {
     height: 48px;
     width: 100%;
     border-radius: 14px;
@@ -34,6 +34,7 @@ button {
     box-shadow: 0px 4px 10px -4px var(--primary-blue);
     color: white;
     background-color: var(--primary-blue);
+    cursor: pointer;
 }
 
 .heading {
@@ -161,10 +162,10 @@ button {
         font-weight: 700;
     }
 
-    button {
-        width: 152px;
-        height: 46px;
+    img {
+        cursor: pointer;
     }
+
 
     .plus {
         display: inline;
@@ -178,13 +179,29 @@ button {
         display: flex;
         max-width: 1440px;
         margin: auto;
-        border: 1px dashed black;
+        /*border: 1px dashed black;*/
         /*background-color: var(--primary-blue);*/
     }
 
     .sidebar {
         width: 270px;
         border-right: 2px solid #E3E5E8;
+        padding: 22px 16px;
+
+        .logo {
+            margin-left: 10px;
+            margin-bottom: 28px;
+        }
+
+        .btn-background {
+            background-image: url(/listMenu.svg);
+            height: 56px;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
     }
 
     .workspace {
@@ -196,7 +213,12 @@ button {
     .menu-bar {
         height: 80px;
         border-bottom: 2px solid #E3E5E8;
-    
+        position: relative;
+        
+        p, a {
+            padding-left: 16px;
+            color: #1A1926;
+        }
         .handle-account {
             display: flex;
             float: right;
@@ -212,6 +234,47 @@ button {
             }
         }
 
+        .account-options {
+            position: absolute;
+            right: 110px;
+            top: 70px;
+            height: 130px;
+            width: 300px;
+            display: none;
+            padding: 8px;
+            border-radius: 14px;
+            background-color: white;
+            color: #1A1926;
+            box-shadow: 0px 10px 20px -10px rgb(26, 25, 38, 0.3);
+        }
+
+        .menu-item {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            background-color: #F5F7FA;
+            box-shadow: none;
+            color: #1A1926;
+            cursor: default;
+        }
+
+        .card-avatar {
+            border: 3px solid white;
+            border-radius: 56px;
+        }
+
+        .logout {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .logout a {
+            font-weight: 400;
+            cursor: pointer;
+        }
+
     }
 
     .add-section {
@@ -220,6 +283,64 @@ button {
         justify-content: space-between;
         align-items: center;
         margin: 0px 30px;
+        
+        button {
+            width: 152px;
+            height: 46px;
+        }
     }
 
+    .filter-bar {
+        margin: 0px 30px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #E3E5E8;
+
+        a {
+            margin-right: 20px; 
+            font-weight: 700;
+            color: #637085;
+            cursor: pointer;
+        }
+        .highlighted {
+            color: var(--primary-blue);
+            border-bottom: 3px solid var(--primary-blue);
+            padding-bottom: 7px;
+        }
+    }
+
+    .outlet {
+        margin: 30px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .project-card {
+        height: 276px;
+        width: 350px;
+        margin: 15px 0px;
+        padding: 16px;
+        border-radius: 16px;
+        background-color: white;
+        box-shadow: 0px 14px 0px -10px rgba(255, 255, 255, 0.5), 0px 10px 20px -10px rgba(26, 25, 38, 0.3);
+
+        img {
+            margin-right: 16px;
+        }
+
+        .top-info {
+            display: flex;
+            align-items:center;
+        }
+
+        .description {
+            margin-top: 16px;
+            font-size: 15px;
+            font-weight: 400;
+        }
+    }
+    
+    .project-card.dummy {
+        visibility: hidden;
+    }
 }
