@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Services;
+//using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebApp.Controllers
 {
@@ -35,6 +36,7 @@ namespace WebApp.Controllers
                 TempData["isCreated"] = true;
                 return RedirectToAction("Index", "Home");
             }
+
             //Console.WriteLine(project.Description);
             //if (project.Client != null) { 
             //    TempData["isCreated"] = true;

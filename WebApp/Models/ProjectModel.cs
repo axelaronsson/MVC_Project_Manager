@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace WebApp.Models;
 
@@ -23,11 +24,13 @@ public class ProjectModel
     public string? Description { get; set; } = null!;
 
     //[Column(TypeName = "date")]
+    [Display(Name = "Start Date")]
     [DataType(DataType.Date)]
     [DisplayFormat(DataFormatString = "{0:MMMM dd, yyyy}", ApplyFormatInEditMode = true)]
     public DateTime StartDate { get; set; }
 
     //[Column(TypeName = "date")]
+    [Display(Name = "End Date")]
     [DisplayFormat(DataFormatString = "{0:MMMM dd, yyyy}", ApplyFormatInEditMode = true)]
     [DataType(DataType.Date)]
     public DateTime EndDate { get; set; }
@@ -36,5 +39,6 @@ public class ProjectModel
     [Range(typeof(bool), "false", "true")]
     public bool Completed { get; set; }
 
-    public int Budget { get; set; }
+    [RegularExpression(@"^\$?[0-9,\.]+", ErrorMessage = "Field must only contain digits, decimal points (optional) and currency symbol (optional).")]
+    public string? Budget { get; set; }
 }
