@@ -38,9 +38,10 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Shared/Error");
     app.UseHsts();
 }
+app.UseExceptionHandler("/Shared/Error");
 
 app.UseHttpsRedirection();
 app.UseRouting();

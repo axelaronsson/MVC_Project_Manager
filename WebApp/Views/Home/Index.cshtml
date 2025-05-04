@@ -3,8 +3,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="popup-form" style="display:none">
+<div class="create-form" style="display:none">
     @await Html.PartialAsync("Partials/_Create", new ProjectModel())
+</div>
+<div class="update-form" style="display:none">
+    @* @await Html.PartialAsync("Partials/_Update", new ProjectModel()) *@
 </div>
 <div id="projects-view">
     <div class="project-container">
@@ -18,7 +21,7 @@
 
         <div class="workspace">
             <div class="menu-bar">
-             @*    @if (ViewBag.isCreated != null) {
+                @*    @if (ViewBag.isCreated != null) {
                     <p>Is created</p>
                 } *@
                 <div class="handle-account">
@@ -40,27 +43,41 @@
 
             <div class="add-section">
                 <h2 class="heading">Projects</h2>
-                <button onclick="toggleCreate()" class="add-btn"><img class="plus" src="/Plus.svg" /> Add Project</button>
+                <button onclick="toggleCreate('.create-form')" class="add-btn"><img class="plus" src="/Plus.svg" /> Add Project</button>
             </div>
 
             <div class="filter-bar">
-                <a class="filter-tab highlighted">ALL [0]</a>
-                <a class="filter-tab">STARTED [0]</a>
-                <a class="filter-tab">COMPLETED [0]</a>
+                @{
+                    var started = 0;
+                    var completed = 0;
+                }
+                @foreach (var project in Model)
+                {
+                    if (project.Completed)
+                    {
+                        completed++;
+                    }
+                    else {
+                        started++;
+                    }
+                }
+                <a onclick="addStylesheetRules('all')" class="filter-tab highlighted">ALL [@(started + completed)]</a>
+                <a onclick="addStylesheetRules('started')" class="filter-tab">STARTED [@started]</a>
+                <a onclick="addStylesheetRules('completed')" class="filter-tab">COMPLETED [@completed]</a>
             </div>
             <div class="outlet">
-                @foreach (var product in Model)
+                @foreach (var project in Model)
                 {
-                    <div class="card-wrapper">
+                    <div id="@project.Id" class="card-wrapper @(project.Completed ? "completed" : "started")">
                         <div class="project-card">
                             <div class="top-info">
                                 <img src="/Image.svg" />
                                 <div>
-                                    <h6>@product.ProjectName</h6>
-                                    <p>@product.Client</p>
+                                    <h6>@project.ProjectName</h6>
+                                    <p>@project.Client</p>
                                 </div>
                             </div>
-                            <p class="description">@product.Description</p>
+                            <p class="description">@project.Description</p>
                         </div>
                     </div>
                 }
@@ -84,19 +101,14 @@
 @section Scripts {
     <script>
         const userBtn = document.querySelector("#user-btn");
-        const accountCard = document.querySelector(".account-options");
-        const createModal = document.querySelector(".popup-form");
         const closeBtn = document.querySelector('#close');
-
-
+        const accountCard = document.querySelector(".account-options");
+        const formModal = document.querySelector(".create-form");
+        const updateModal = document.querySelector(".update-form");
         accountCard.style.display = "none"
-        userBtn.addEventListener("click", () => {
-            if (accountCard.style.display === "none") {
-                accountCard.style.display = "block";
-            } else {
-                accountCard.style.display = "none"
-            }
-        });
+        formModal.style.display = "none"
+        // updateModal.style.display = "none"
+
 
         const highLight = (e) => {
             filterTabs.forEach(el => el.classList.remove("highlighted"));
@@ -108,17 +120,38 @@
 
 
 
-        createModal.style.display = "none"
-        const toggleCreate = (e) => {
-            if (createModal.style.display === "none") {
-                createModal.style.display = "block";
+        const toggleCreate = (elementClass) => {
+            const el = document.querySelector(elementClass);
+            if (el.style.display === "none") {
+                el.style.display = "block";
             } else {
-                createModal.style.display = "none"
+                el.style.display = "none"
             }
         }
 
-        closeBtn.addEventListener("click", toggleCreate);
+        closeBtn.addEventListener("click", () => toggleCreate(".create-form"));
+        userBtn.addEventListener("click", () => toggleCreate(".account-options"));
 
+        const cards = document.querySelectorAll(".card-wrapper");
+        cards.forEach(el => el.addEventListener("click", () => {
+            console.log(el.getAttribute("id"));
+            getUpdateData(el.getAttribute("id"));
+
+        }));
+
+        const getUpdateData = (id) => {
+            fetch('/Home/GetUpdateForm/' + id)
+                .then((response) => response.text())
+                .then((body) => {
+                    console.log(body)
+                    document.querySelector('.update-form').innerHTML = body;
+                })
+                .then(() => {
+                    toggleCreate(".update-form");
+                    const closeUpdateBtn = document.querySelector('#close-update');
+                    closeUpdateBtn.addEventListener("click", () => { toggleCreate(".update-form") });
+                })
+        }
 
         const toolbarOptions = [
           ['bold', 'italic', 'underline'],
@@ -135,12 +168,46 @@
             theme: 'snow'
         });
 
+
         quill.on('editor-change', (eventName) => {
             const html = quill.getSemanticHTML(0);
-            console.log(html);
+            // console.log(html);
             const inputText = document.getElementById('wysiwyg-content');
             inputText.value = html;
         });
+
+        const initUpdateEditor = () => {
+
+            const quill_2 = new Quill('#update-editor', {
+                modules: {
+                  toolbar: toolbarOptions
+                },
+                placeholder: 'Type something..',
+                theme: 'snow'
+            });
+
+            quill_2.on('editor-change', (eventName) => {
+                const html = quill.getSemanticHTML(0);
+                // console.log(html);
+                const inputText = document.getElementById('wysiwyg-content-update');
+                inputText.value = html;
+            });
+
+            $(function () {
+                $("#update-start-date").datepicker(
+                    {
+                        dateFormat: "MM dd, yy"
+                    }
+                );
+
+                $("#update-end-date").datepicker(
+                    {
+                        dateFormat: "MM dd, yy"
+                    }
+                );
+            });
+        }
+
 
 
         $(document).ready(function () {
@@ -159,5 +226,28 @@
                 );
             });
         })
+
+
+
+        function addStylesheetRules(filter) {
+            const styleEl = document.createElement("style");
+            document.head.appendChild(styleEl);
+            const styleSheet = styleEl.sheet;
+
+            switch (filter) {
+                case "all":
+                    styleSheet.insertRule(".completed { display: block }", 0);
+                    styleSheet.insertRule(".started { display: block }", 1);
+                    break;
+                case "started":
+                    styleSheet.insertRule(".completed { display: none }", 0);
+                    styleSheet.insertRule(".started { display: block }", 1);
+                    break;
+                case "completed":
+                    styleSheet.insertRule(".completed { display: block }", 0);
+                    styleSheet.insertRule(".started { display: none }", 1);
+                    break;
+            }
+        }
     </script>
 }

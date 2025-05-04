@@ -1,16 +1,15 @@
 ﻿@model ProjectModel
 @{
-	ViewData["Title"] = "Create";
+	ViewData["Title"] = "Update";
 }
 
 <div id="create" class="popup">
 	<div class="wrapper">
-		<img id="close" src="/X.svg" />
-		<h3 class="heading">Add Project</h3>
+		<img id="close-update" src="/X.svg" />
+		<h3 class="heading">Edit Project</h3>
 		<img class="logo-img" src="/Image.svg" />
 		<div class="form-container">
-			<form id="" asp-action="Create" asp-controller="Home" method="post" novalidate>
-				<input type="hidden" asp-for="Id" />
+			<form id="" asp-action="Update" asp-controller="Home" method="post" novalidate>
 				<div class="form-group create">
 					<label asp-for="ProjectName"></label>
 					<div class="field-group">
@@ -31,11 +30,13 @@
 
 				<div class="form-group">
 					<label asp-for="Description"></label>
-					<input type="hidden" id="wysiwyg-content" asp-for="Description" />
+					<input type="hidden" id="wysiwyg-content-update" asp-for="Description" />
 					<div class="wysiwyg-container" style="display: flex;flex-direction: column-reverse;">
-						<div id="editor">
+						<div id="update-editor">
 							@if (Model != null)
 								@Html.Raw(Model.Description)
+
+
 						</div>
 					</div>
 				</div>
@@ -45,7 +46,7 @@
 						<label asp-for="StartDate"></label>
 						<div class="field-group">
 							<img src="~/Calendarsvg.svg" />
-							<input id="start-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
+							<input id="update-start-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
 							<span asp-validation-for="StartDate"></span>
 							<span class="js-validation">Required field</span>
 						</div>
@@ -54,7 +55,7 @@
 						<label asp-for="EndDate"></label>
 						<div class="field-group">
 							<img src="~/Calendarsvg.svg" />
-							<input id="end-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
+							<input id="update-end-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
 							<span asp-validation-for="EndDate"></span>
 							<span class="js-validation">Required field</span>
 						</div>

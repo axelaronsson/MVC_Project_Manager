@@ -51,14 +51,11 @@ button, .menu-item {
 .wysiwyg-container {
     padding-top: 10px;
 
-    #editor {
+    #editor, #update-editor {
         min-height: 120px;
         border-top-left-radius: 14px;
         border-top-right-radius: 14px;
         border: 1px solid #EBEEF2;
-
-        div[data-placeholder="Type something.."] {
-        }
         
         .ql-editor::before {
             font-family: "Nunito";

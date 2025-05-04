@@ -32,8 +32,8 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 bool created = project.Completed;
-                Console.WriteLine(created);
                 TempData["isCreated"] = true;
+                _projectService.Create(project);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -45,8 +45,49 @@ namespace WebApp.Controllers
             return View(project);
         }
 
+        [Route("Home/GetUpdateForm/{id}")]
+        public IActionResult GetUpdateForm(string id)
+        {
+            var projects = _projectService.GetAllAsync();
+            var found = projects.FirstOrDefault(x => x.Id.ToString() == id);
+            if (found != null)
+            {
+                return PartialView("Partials/_Update", found);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost]
+        public IActionResult Update(ProjectModel project)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                //throw new InvalidOperationException("error blabla");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return StatusCode(500);
+            }
+
+            return View(project);
+        }
+
         public IActionResult Privacy()
         {
+            try
+            {
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return StatusCode(500);
+            }
             return View();
         }
 
