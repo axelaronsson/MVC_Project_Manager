@@ -10,6 +10,8 @@
 		<img class="logo-img" src="/Image.svg" />
 		<div class="form-container">
 			<form id="" asp-action="Update" asp-controller="Home" method="post" novalidate>
+				<input type="hidden" asp-for="Id" />
+				<input type="hidden" asp-for="UserName" />
 				<div class="form-group create">
 					<label asp-for="ProjectName"></label>
 					<div class="field-group">
@@ -45,7 +47,7 @@
 						<label asp-for="StartDate"></label>
 						<div class="field-group">
 							<img src="~/Calendarsvg.svg" />
-							<input id="update-start-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
+							<input id="update-start-date" type="text" value="@Model!.StartDate.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
 							<span asp-validation-for="StartDate"></span>
 							<span class="js-validation">Required field</span>
 						</div>
@@ -54,7 +56,7 @@
 						<label asp-for="EndDate"></label>
 						<div class="field-group">
 							<img src="~/Calendarsvg.svg" />
-							<input id="update-end-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
+							<input id="update-end-date" type="text" value="@Model!.EndDate.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
 							<span asp-validation-for="EndDate"></span>
 							<span class="js-validation">Required field</span>
 						</div>

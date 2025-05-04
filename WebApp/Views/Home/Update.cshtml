@@ -10,6 +10,8 @@
 		<img class="logo-img" src="/Image.svg" />
 		<div class="form-container">
 			<form id="" asp-action="Update" asp-controller="Home" method="post" novalidate>
+				<input type="hidden" asp-for="Id" />
+				<input type="hidden" asp-for="UserName" />
 				<div class="form-group create">
 					<label asp-for="ProjectName"></label>
 					<div class="field-group">
@@ -46,7 +48,7 @@
 						<label asp-for="StartDate"></label>
 						<div class="field-group">
 							<img src="~/Calendarsvg.svg" />
-							<input id="update-start-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
+							<input id="update-start-date" type="text" value="@Model!.StartDate.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
 							<span asp-validation-for="StartDate"></span>
 							<span class="js-validation">Required field</span>
 						</div>
@@ -55,7 +57,7 @@
 						<label asp-for="EndDate"></label>
 						<div class="field-group">
 							<img src="~/Calendarsvg.svg" />
-							<input id="update-end-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
+							<input id="update-end-date" type="text" value="@Model!.EndDate.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
 							<span asp-validation-for="EndDate"></span>
 							<span class="js-validation">Required field</span>
 						</div>
@@ -81,8 +83,41 @@
 					</div>
 				</div>
 
-				<button type="submit" class="btn btn-submit btn-primary create-btn">Create</button>
+				<button type="submit" class="btn btn-submit btn-primary create-btn">Update</button>
 			</form>
 		</div>
 	</div>
 </div>
+
+@section Scripts {
+	<script>
+		const quill_2 = new Quill('#update-editor', {
+			modules: {
+			  toolbar: toolbarOptions
+			},
+			placeholder: 'Type something..',
+			theme: 'snow'
+		});
+
+		quill_2.on('editor-change', (eventName) => {
+			const html = quill_2.getSemanticHTML(0);
+			// console.log(html);
+			const inputText = document.getElementById('wysiwyg-content-update');
+			inputText.value = html;
+		});
+
+		$(function () {
+			$("#update-start-date").datepicker(
+				{
+					dateFormat: "MM dd, yy"
+				}
+			);
+
+			$("#update-end-date").datepicker(
+				{
+					dateFormat: "MM dd, yy"
+				}
+			);
+		});
+	</script>
+}

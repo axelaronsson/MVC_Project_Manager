@@ -22,7 +22,10 @@ public class AuthController(UserService userService, SignInManager<AppUser> sign
     public async Task<IActionResult> SignUp(UserSignUpForm form)
     {
         if (!ModelState.IsValid)
+        {
+            //ModelState.AddModelError("Password", "Password must contain..");
             return View(form);
+        }
 
         if (await _userService.ExistsAsync(form.Email))
         {
@@ -30,6 +33,7 @@ public class AuthController(UserService userService, SignInManager<AppUser> sign
             return View(form);
         }
 
+            //throw new InvalidOperationException("error blabla");
         var result = await _userService.CreateAsync(form);
         if (result)
             return RedirectToAction("SignIn", "Auth");

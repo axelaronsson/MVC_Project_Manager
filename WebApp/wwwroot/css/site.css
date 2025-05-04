@@ -19,6 +19,16 @@ a {
     }
 }
 
+.field-validation-error {
+    color: red;
+}
+
+span[data-valmsg-for="Exists"],
+span[data-valmsg-for="NotCreated"] {
+    display: block;
+    padding-bottom: 8px;
+}
+
 label, input, span, p, a {
     font-weight: 600;
     font-size: 15px;
@@ -44,7 +54,7 @@ button, .menu-item {
 
 
 .js-validation {
-    display: none;
+    /*display: none;*/
     color: red;
 }
 
@@ -448,6 +458,7 @@ button, .menu-item {
     .project-card {
         height: 276px;
         width: 350px;
+        position: relative;
         margin: 15px 0px;
         padding: 16px;
         border-radius: 16px;
@@ -456,6 +467,40 @@ button, .menu-item {
 
         img {
             margin-right: 16px;
+        }
+
+        h6 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--heading);
+        }
+
+        button {
+            font-weight: 400;
+        }
+
+        .client-p {
+            font-weight: 400;
+            color: #637085;
+        }
+
+        hr {
+            border: 1px solid #EBEEF2;
+            margin: 2px 0px 1px 0px;
+        }
+
+        .edit-btn {
+            position: absolute;
+            right: 16px;
+            height: 40px;
+            width: 40px;
+            border-radius: 12px;
+            background: center url(/dots.svg) no-repeat;
+            cursor: pointer;
+        }
+
+        .edit-btn:hover {
+            background-color: #F5F7FA;
         }
 
         .top-info {
@@ -467,6 +512,39 @@ button, .menu-item {
             margin-top: 16px;
             font-size: 15px;
             font-weight: 400;
+        }
+
+        .project-options {
+            position: absolute;
+            right: 30px;
+            top: 60px;
+            height: 115px;
+            width: 230px;
+            padding: 8px;
+            border-radius: 14px;
+            background-color: white;
+            color: var(--heading);
+            box-shadow: 0px 10px 20px -10px rgb(26, 25, 38, 0.3);
+        }
+        .project-options .menu-item, .project-options button {
+            box-shadow: none;
+            background-color: transparent;
+            color: var(--heading);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+
+        button.delete {
+            color: #FF6640;
+        }
+        .menu-item:hover {
+            background-color: #F5F7FA;
+        }
+
+        .opt-img {
+            height: 20px;
+            width: 20px;
         }
     }
     

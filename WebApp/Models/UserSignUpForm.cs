@@ -16,7 +16,7 @@ public class UserSignUpForm
     public string Email { get; set; } = null!;
 
     [Required(ErrorMessage = "Required field")]
-    [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Invalid Password")]
+    [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9 -]).{8,}$", ErrorMessage = "Password must be at least 8 characters and contain one: digit, lowercase and uppercase letter, non alphanumeric.")]
     [Display(Name = "Password", Prompt = "Enter your password")]
     [DataType(DataType.Password)]
     public string Password { get; set; } = null!;

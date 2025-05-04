@@ -10,7 +10,7 @@
 		<img class="logo-img" src="/Image.svg" />
 		<div class="form-container">
 			<form id="" asp-action="Create" asp-controller="Home" method="post" novalidate>
-				<input type="hidden" asp-for="Id" />
+				<input type="hidden" asp-for="UserName" value="@userManager.GetUserName(User)" />
 				<div class="form-group create">
 					<label asp-for="ProjectName"></label>
 					<div class="field-group">

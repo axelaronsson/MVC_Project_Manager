@@ -1,5 +1,4 @@
 ﻿@model UserSignUpForm
-
 @{
 	ViewData["Title"] = "Sign Up";
 }
@@ -13,8 +12,8 @@
 					<label asp-for="FullName"></label>
 					<div class="field-group">
 						<input asp-for="FullName" />
-						<span asp-validation-for="FullName"></span>
-						<span class="js-validation">Required field</span>
+						<span class="FullName" asp-validation-for="FullName"></span>
+						<span class="js-validation FullName"></span>
 					</div>
 				</div>
 
@@ -22,8 +21,8 @@
 					<label asp-for="Email"></label>
 					<div class="field-group">
 						<input asp-for="Email" />
-						<span asp-validation-for="Email"></span>
-						<span class="js-validation">Required field</span>
+						<span class="Email" asp-validation-for="Email"></span>
+						<span class="js-validation Email"></span>
 					</div>
 				</div>
 
@@ -31,8 +30,8 @@
 					<label asp-for="Password"></label>
 					<div class="field-group">
 						<input asp-for="Password" />
-						<span asp-validation-for="Password"></span>
-						<span class="js-validation">Required field</span>
+						<span class="Password" asp-validation-for="Password"></span>
+						<span class="js-validation Password"></span>
 					</div>
 				</div>
 
@@ -40,8 +39,8 @@
 					<label asp-for="ConfirmPassword"></label>
 					<div class="field-group">
 						<input asp-for="ConfirmPassword" />
-						<span asp-validation-for="ConfirmPassword"></span>
-						<span class="js-validation">Required field</span>
+						<span class="ConfirmPassword" asp-validation-for="ConfirmPassword"></span>
+						<span class="js-validation ConfirmPassword"></span>
 					</div>
 				</div>
 
@@ -51,12 +50,20 @@
 						<p>I accept</p><a target="_blank" href="https://developer.mozilla.org/">Terms and Conditions</a>
 					</div>
 					<span asp-validation-for="TermsAndConditions"></span>
-					<span class="js-validation">You need to approve Terms & Conditions</span>
 				</div>
+				@Html.ValidationMessage("Exists")
+				@Html.ValidationMessage("NotCreated")
 
 				<button type="submit" class="btn btn-submit btn-primary">Create Account</button>
 			</form>
 		</div>
+		<div class="form-link">
+			<p>Already have an account?</p>
+			<a asp-controller="Auth" asp-action="SignIn">Login</a>
+		</div>
 	</div>
 </div>
 
+@section Scripts {
+	<script src="~/js/validate.js"></script>
+}

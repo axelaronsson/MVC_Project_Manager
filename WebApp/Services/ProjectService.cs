@@ -1,105 +1,52 @@
-﻿using WebApp.Data;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using WebApp.Data;
+using WebApp.Data.Entities;
+using WebApp.Factories;
 using WebApp.Models;
 
 namespace WebApp.Services;
 
-public class ProjectService(DataContext dataContext)
+public class ProjectService(DataContext dataContext, UserManager<AppUser> userManager) : IProjectService
 {
     private readonly DataContext _dataContext = dataContext;
+    //private List<ProjectModel> _projects = [];
 
     public bool Create(ProjectModel project)
     {
+        var projectEntity = ProjectFactory.Create(project);
         //_dataContext.Projects.All(x => x.Id == project.Id);
-        _dataContext.Projects.Add(project);
+        _dataContext.Projects.Add(projectEntity);
         _dataContext.SaveChanges();
         return true;
     }
 
-    public IEnumerable<ProjectModel> GetAllAsync()
+    public bool Update(ProjectModel updatedEntity)
     {
-        var project = new ProjectModel
+        var existingEntity = _dataContext.Projects.FirstOrDefault(p => p.Id == updatedEntity.Id);
+
+        if (existingEntity != null)
         {
-            Id = 1,
-            ProjectName = "Website Redesign",
-            Client = "GitLab Inc.",
-            Description = "It is necessary to develop a website redesign in a corporate style.",
-            Completed = true
-        };
+            //throw new InvalidOperationException("error blabla");
+            _dataContext.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
+            _dataContext.SaveChanges();
+            return true;
 
-        var project2 = new ProjectModel
-        {
-            Id = 2,
-            ProjectName = "Landing Page",
-            Client = "Bitbucket, Inc.",
-            Description = "It is necessary to create a landing together with the development of design.",
-            Completed = true
-        };
+        }
+        return false;
+    }
 
-        var project3 = new ProjectModel
-        {
-            Id = 3,
-            ProjectName = "Parser Development",
-            Client = "Driveway, Inc.",
-            Description = "Create a mobile application on iOS and Android devices.",
-            Completed = false
-        };
+    public ProjectModel GetProject(string id)
+    {
+        var entity = _dataContext.Projects.FirstOrDefault(p => p.Id.ToString() == id)!;
+        return ProjectFactory.Create(entity);
+    }
 
-        var project4 = new ProjectModel
-        {
-            Id = 4,
-            ProjectName = "Parser Development",
-            Client = "Driveway, Inc.",
-            Description = "Create a mobile application on iOS and Android devices.",
-            Completed = false
-        };
-
-        var project5 = new ProjectModel
-        {
-            Id = 5,
-            ProjectName = "Parser Development",
-            Client = "Driveway, Inc.",
-            Description = "Create a mobile application on iOS and Android devices.",
-            Completed = true
-        };
-
-        var project6 = new ProjectModel
-        {
-            Id = 6,
-            ProjectName = "Parser Development",
-            Client = "Driveway, Inc.",
-            Description = "Create a mobile application on iOS and Android devices.",
-            Completed = false
-        };
-
-        var project7 = new ProjectModel
-        {
-            Id = 7,
-            ProjectName = "Parser Development",
-            Client = "Driveway, Inc.",
-            Description = "Create a mobile application on iOS and Android devices.",
-            Completed = true
-        };
-
-        //var project8 = new ProjectModel
-        //{
-        //    Id = 8,
-        //    ProjectName = "Parser Development",
-        //    Client = "Driveway, Inc.",
-        //    Description = "Create a mobile application on iOS and Android devices.",
-        //    Completed = false
-        //};
-
-        var list = new List<ProjectModel> {
-                project,
-                project2,
-                project3,
-                project4,
-                project5,
-                project6,
-                project7,
-                //project8,
-            };
-
-        return list;
+    public IEnumerable<ProjectModel> GetAllAsync(string userName)
+    {
+        var entities = _dataContext.Projects.Where(p => p.UserName == userName);
+        var projectDtos = entities.Select(p => ProjectFactory.Create(p));
+        return projectDtos;
     }
 }

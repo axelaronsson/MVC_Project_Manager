@@ -9,6 +9,9 @@ public class ProjectModel
     [Key]
     public int Id { get; set; }
 
+    [Required]
+    public string UserName { get; set; } = null!;
+
     [Required(ErrorMessage = "Required field")]
     [Display(Name = "Project Name", Prompt = "Project name")]
     [DataType(DataType.Text)]

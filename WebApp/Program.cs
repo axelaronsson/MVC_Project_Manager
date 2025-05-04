@@ -29,7 +29,17 @@ builder.Services.ConfigureApplicationCookie(x =>
 });
 
 builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
+//builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    options.Password.RequireDigit = true;
+//    options.Password.RequireLowercase = true;
+//    options.Password.RequireNonAlphanumeric = true;
+//    options.Password.RequireUppercase = true;
+//    options.Password.RequiredLength = 6;
+//    options.Password.RequiredUniqueChars = 1;
+//});
 
 
 builder.Services.AddControllersWithViews();
@@ -42,6 +52,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 app.UseExceptionHandler("/Shared/Error");
+
+app.UseStatusCodePages(async context  =>
+{
+    if (context.HttpContext.Response.StatusCode == StatusCodes.Status404NotFound)
+    {
+        context.HttpContext.Response.ContentType = "text/html";
+        await context.HttpContext.Response.WriteAsync("<html><body><h1>Page not found.<br/> <a href=\"/\">Go Back</a></h1></body></html>");
+    }
+});
 
 app.UseHttpsRedirection();
 app.UseRouting();

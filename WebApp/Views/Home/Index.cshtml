@@ -32,18 +32,18 @@
                 <div class="account-options">
                     <div class="menu-item">
                         <img class="card-avatar" src="/avatar.png" />
-                        <p>User Name</p>
+                        <p>@userManager.GetUserName(User)</p>
                     </div>
                     <div class="logout">
                         <img src="/Logout.png" />
-                        <a>Logout</a>
+                        <a asp-controller="Home" asp-action="LogOut">Logout</a>
                     </div>
                 </div>
             </div>
 
             <div class="add-section">
                 <h2 class="heading">Projects</h2>
-                <button onclick="toggleCreate('.create-form')" class="add-btn"><img class="plus" src="/Plus.svg" /> Add Project</button>
+                <button onclick="toggleModal('.create-form')" class="add-btn"><img class="plus" src="/Plus.svg" /> Add Project</button>
             </div>
 
             <div class="filter-bar">
@@ -70,14 +70,26 @@
                 {
                     <div id="@project.Id" class="card-wrapper @(project.Completed ? "completed" : "started")">
                         <div class="project-card">
+                            <div onclick="toggleEdit(@project.Id)" data-id="@project.Id" class="edit-btn"></div>
+                            <div id="opt-@project.Id" class="project-options" style="display:none">
+                                <div class="menu-item">
+                                    <img class="opt-img" src="~/pen.svg" />
+                                    <button onclick="getUpdateData(@project.Id)">Edit</button>
+                                </div>
+                                <hr />
+                                <div class="menu-item">
+                                    <img class="opt-img" src="~/trashcan.svg" />
+                                    <button class="delete">Delete Project</button>
+                                </div>
+                            </div>
                             <div class="top-info">
                                 <img src="/Image.svg" />
                                 <div>
                                     <h6>@project.ProjectName</h6>
-                                    <p>@project.Client</p>
+                                    <p class="client-p">@project.Client</p>
                                 </div>
                             </div>
-                            <p class="description">@project.Description</p>
+                            <p class="description">@Html.Raw(project.Description)</p>
                         </div>
                     </div>
                 }
@@ -120,7 +132,7 @@
 
 
 
-        const toggleCreate = (elementClass) => {
+        const toggleModal = (elementClass) => {
             const el = document.querySelector(elementClass);
             if (el.style.display === "none") {
                 el.style.display = "block";
@@ -129,27 +141,38 @@
             }
         }
 
-        closeBtn.addEventListener("click", () => toggleCreate(".create-form"));
-        userBtn.addEventListener("click", () => toggleCreate(".account-options"));
+        const toggleEdit = (elemId) => {
+            console.log(elemId);
+            const el = document.querySelector("#opt-" + elemId);
+            if (el.style.display === "none") {
+                el.style.display = "block";
+            } else {
+                el.style.display = "none"
+            }
+        }
 
-        const cards = document.querySelectorAll(".card-wrapper");
-        cards.forEach(el => el.addEventListener("click", () => {
-            console.log(el.getAttribute("id"));
-            getUpdateData(el.getAttribute("id"));
+        closeBtn.addEventListener("click", () => toggleModal(".create-form"));
+        userBtn.addEventListener("click", () => toggleModal(".account-options"));
 
-        }));
+        // const cards = document.querySelectorAll(".card-wrapper");
+        // cards.forEach(el => el.addEventListener("click", () => {
+        //     console.log(el.getAttribute("id"));
+        //     getUpdateData(el.getAttribute("id"));
+
+        // }));
 
         const getUpdateData = (id) => {
             fetch('/Home/GetUpdateForm/' + id)
                 .then((response) => response.text())
                 .then((body) => {
-                    console.log(body)
+                    // console.log(body)
                     document.querySelector('.update-form').innerHTML = body;
                 })
                 .then(() => {
-                    toggleCreate(".update-form");
+                    toggleModal(".update-form");
                     const closeUpdateBtn = document.querySelector('#close-update');
-                    closeUpdateBtn.addEventListener("click", () => { toggleCreate(".update-form") });
+                    closeUpdateBtn.addEventListener("click", () => { toggleModal(".update-form") });
+                    initUpdateEditor();
                 })
         }
 
@@ -176,6 +199,23 @@
             inputText.value = html;
         });
 
+        $(document).ready(function () {
+
+            $(function () {
+                $("#start-date").datepicker(
+                    {
+                        dateFormat: "MM dd, yy"
+                    }
+                );
+
+                $("#end-date").datepicker(
+                    {
+                        dateFormat: "MM dd, yy"
+                    }
+                );
+            });
+        })
+
         const initUpdateEditor = () => {
 
             const quill_2 = new Quill('#update-editor', {
@@ -187,7 +227,7 @@
             });
 
             quill_2.on('editor-change', (eventName) => {
-                const html = quill.getSemanticHTML(0);
+                const html = quill_2.getSemanticHTML(0);
                 // console.log(html);
                 const inputText = document.getElementById('wysiwyg-content-update');
                 inputText.value = html;
@@ -207,26 +247,6 @@
                 );
             });
         }
-
-
-
-        $(document).ready(function () {
-
-            $(function () {
-                $("#start-date").datepicker(
-                    {
-                        dateFormat: "MM dd, yy"
-                    }
-                );
-
-                $("#end-date").datepicker(
-                    {
-                        dateFormat: "MM dd, yy"
-                    }
-                );
-            });
-        })
-
 
 
         function addStylesheetRules(filter) {

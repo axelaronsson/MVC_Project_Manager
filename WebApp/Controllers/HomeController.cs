@@ -9,17 +9,18 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
-    public class HomeController(UserManager<AppUser> userManager, ProjectService projectService) : Controller
+    public class HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IProjectService projectService) : Controller
     {
         private readonly UserManager<AppUser> _userManager = userManager;
-        private readonly ProjectService _projectService = projectService;
+        private readonly IProjectService _projectService = projectService;
 
         [Authorize]
         public IActionResult Index()
         {
 
             var userId = _userManager.GetUserId(User);
-            var projects = _projectService.GetAllAsync();
+            var userName = _userManager.GetUserName(User)!;
+            var projects = _projectService.GetAllAsync(userName);
             Console.WriteLine(userId);
             ViewBag.isCreated = TempData["isCreated"];
 
@@ -48,11 +49,10 @@ namespace WebApp.Controllers
         [Route("Home/GetUpdateForm/{id}")]
         public IActionResult GetUpdateForm(string id)
         {
-            var projects = _projectService.GetAllAsync();
-            var found = projects.FirstOrDefault(x => x.Id.ToString() == id);
-            if (found != null)
+            var project = _projectService.GetProject(id);
+            if (project != null)
             {
-                return PartialView("Partials/_Update", found);
+                return PartialView("Partials/_Update", project);
             }
 
             return BadRequest();
@@ -61,34 +61,33 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Update(ProjectModel project)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                try
                 {
-                    return RedirectToAction("Index", "Home");
+                    //throw new InvalidOperationException("error blabla");
+                    var result = _projectService.Update(project);
+                    if (result)
+                        return RedirectToAction("Index", "Home");
+                    return StatusCode(404);
+                    
                 }
-                //throw new InvalidOperationException("error blabla");
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return StatusCode(500);
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e);
+                    return StatusCode(500);
+                }
             }
 
             return View(project);
+
         }
 
-        public IActionResult Privacy()
+
+        public IActionResult LogOut()
         {
-            try
-            {
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return StatusCode(500);
-            }
-            return View();
+            signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
     }
