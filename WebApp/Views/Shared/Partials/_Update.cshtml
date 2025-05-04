@@ -15,18 +15,18 @@
 				<div class="form-group create">
 					<label asp-for="ProjectName"></label>
 					<div class="field-group">
-						<input asp-for="ProjectName" />
-						<span asp-validation-for="ProjectName"></span>
-						<span class="js-validation">Required field</span>
+						<input class="update-ProjectName" asp-for="ProjectName" />
+						<span class="update-ProjectName" asp-validation-for="ProjectName"></span>
+						@* <span class="js-validation">Required field</span> *@
 					</div>
 				</div>
 
 				<div class="form-group create">
 					<label asp-for="Client"></label>
 					<div class="field-group">
-						<input asp-for="Client" />
-						<span asp-validation-for="Client"></span>
-						<span class="js-validation">Required field</span>
+						<input class="update-Client" asp-for="Client" />
+						<span class="update-Client" asp-validation-for="Client"></span>
+						@* <span class="js-validation">Required field</span> *@
 					</div>
 				</div>
 
@@ -49,7 +49,6 @@
 							<img src="~/Calendarsvg.svg" />
 							<input id="update-start-date" type="text" value="@Model!.StartDate.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
 							<span asp-validation-for="StartDate"></span>
-							<span class="js-validation">Required field</span>
 						</div>
 					</div>
 					<div class="form-group create">
@@ -58,7 +57,6 @@
 							<img src="~/Calendarsvg.svg" />
 							<input id="update-end-date" type="text" value="@Model!.EndDate.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
 							<span asp-validation-for="EndDate"></span>
-							<span class="js-validation">Required field</span>
 						</div>
 					</div>
 				</div>
@@ -69,16 +67,14 @@
 						<input asp-for="Completed" />
 						<span asp-validation-for="Completed"></span>
 					</div>
-					<span class="js-validation">You need to approve Terms & Conditions</span>
 				</div>
 
 				<div class="form-group create">
 					<label asp-for="Budget"></label>
 					<div class="field-group">
 						<img class="dollar" src="~/Dollar.svg" />
-						<input asp-for="Budget" />
-						<span asp-validation-for="Budget"></span>
-						<span class="js-validation">Required field</span>
+						<input class="update-Budget" asp-for="Budget" />
+						<span class="update-Budget" asp-validation-for="Budget"></span>
 					</div>
 				</div>
 

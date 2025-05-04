@@ -14,11 +14,13 @@
 				<div class="form-group">
 					<label asp-for="Email"></label>
 					<input asp-for="Email" />
+					<span class="js-validation Email"></span>
 				</div>
 
 				<div class="form-group">
 					<label asp-for="Password"></label>
 					<input asp-for="Password" />
+					<span class="js-validation Password"></span>
 				</div>
 
 				<div class="form-group">
@@ -42,3 +44,26 @@
 	</div>
 </div>
 
+@section Scripts {
+	<script>
+		const validate = (e) => {
+			const field = e.target.name;
+
+			let errMsg = document.querySelector(`span[class="js-validation ${field}"]`);
+
+			if (e.target.value.trim() === "") {
+				errMsg.innerHTML = "Required field";
+			}
+			else {
+				errMsg.innerHTML = "";
+			}
+		}	
+
+
+		const mail = document.querySelector('input[name="Email"]');
+		const pswrd = document.querySelector('input[name="Password"]');
+
+		mail.addEventListener("focusout", validate);
+		pswrd.addEventListener("focusout", validate);
+	</script>
+}

@@ -1,5 +1,4 @@
 ﻿const validate = (e) => {
-	console.log(validate);
 	const field = e.target.name;
 
 	const patterns = {
@@ -15,28 +14,18 @@
 	};
 
 
-	const jsSpan = document.getElementsByClassName('js-validation ' + field)[0];
-	const aspSpan = document.getElementsByClassName(field + " field-validation-error")[0];
-	let errMsg = jsSpan;
-
-	if (aspSpan)
-		errMsg = aspSpan;
+	let errMsg = document.querySelector(`span[class*="${field} field-validation"]`);
 
 	if (e.target.value.trim() === "") {
-		console.log("cond 1");
 		errMsg.innerHTML = "Required field";
-		errMsg.style.display = "block";
 	}
 	else if (field === "ConfirmPassword" && (pswrd.value !== confirmPswrd.value) && (pswrd.value.length > 0)) {
-		console.log("cond 2");
-			errMsg.innerHTML = "Passwords don't match";
-			errMsg.style.display = "block";
+		errMsg.innerHTML = "Passwords don't match";
+		confirmPswrd.addEventListener("focus", validate);
+
 	}
 	else if (patterns[field] && !patterns[field].test(e.target.value)) {
-		console.log("cond 3");
-		//errMsg.innerHTML = "Invalid " + field.replace("Name", " Name");
 		errMsg.innerHTML = messages[field];
-		errMsg.style.display = "block";
 		if (field === "Password") {
 			console.log("field", field)
 			pswrd.removeEventListener("focusout", validate);
@@ -44,11 +33,8 @@
 		}
 	}
 	else {
-		console.log("else");
 		errMsg.innerHTML = "";
-		//errMsg.style.display = "none";
 	}
-	//errMsg.previousElementSibling.display = "none";
 }
 
 const debounce = (mainFunction, delay) => {

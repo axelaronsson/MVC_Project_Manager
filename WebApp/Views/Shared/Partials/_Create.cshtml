@@ -15,8 +15,8 @@
 					<label asp-for="ProjectName"></label>
 					<div class="field-group">
 						<input asp-for="ProjectName" />
-						<span asp-validation-for="ProjectName"></span>
-						<span class="js-validation">Required field</span>
+						<span class="ProjectName" asp-validation-for="ProjectName"></span>
+						@* <span class="js-validation">Required field</span> *@
 					</div>
 				</div>
 
@@ -24,8 +24,8 @@
 					<label asp-for="Client"></label>
 					<div class="field-group">
 						<input asp-for="Client" />
-						<span asp-validation-for="Client"></span>
-						<span class="js-validation">Required field</span>
+						<span class="Client" asp-validation-for="Client"></span>
+						@* <span class="js-validation">Required field</span> *@
 					</div>
 				</div>
 
@@ -47,7 +47,6 @@
 							<img src="~/Calendarsvg.svg" />
 							<input id="start-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
 							<span asp-validation-for="StartDate"></span>
-							<span class="js-validation">Required field</span>
 						</div>
 					</div>
 					<div class="form-group create">
@@ -56,7 +55,6 @@
 							<img src="~/Calendarsvg.svg" />
 							<input id="end-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
 							<span asp-validation-for="EndDate"></span>
-							<span class="js-validation">Required field</span>
 						</div>
 					</div>
 				</div>
@@ -67,7 +65,6 @@
 						<input asp-for="Completed" />
 						<span asp-validation-for="Completed"></span>
 					</div>
-					<span class="js-validation">You need to approve Terms & Conditions</span>
 				</div>
 
 				<div class="form-group create">
@@ -75,8 +72,7 @@
 					<div class="field-group">
 						<img class="dollar" src="~/Dollar.svg" />
 						<input asp-for="Budget" />
-						<span asp-validation-for="Budget"></span>
-						<span class="js-validation">Required field</span>
+						<span class="Budget" asp-validation-for="Budget"></span>
 					</div>
 				</div>
 

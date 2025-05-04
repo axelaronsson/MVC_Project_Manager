@@ -30,19 +30,24 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create(ProjectModel project)
         {
-            if (ModelState.IsValid)
+            try
             {
-                bool created = project.Completed;
-                TempData["isCreated"] = true;
-                _projectService.Create(project);
-                return RedirectToAction("Index", "Home");
+                if (ModelState.IsValid)
+                {
+                    bool created = project.Completed;
+                    TempData["isCreated"] = true;
+                    _projectService.Create(project);
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return StatusCode(500);
             }
 
-            //Console.WriteLine(project.Description);
-            //if (project.Client != null) { 
-            //    TempData["isCreated"] = true;
-            //    return RedirectToAction("Index", "Home");
-            //}
+
+            //var newProject = new ProjectModel();
             return View(project);
         }
 
@@ -81,6 +86,13 @@ namespace WebApp.Controllers
 
             return View(project);
 
+        }
+
+        [HttpDelete]
+        [Route("Home/Delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            return StatusCode(200);
         }
 
 

@@ -42,6 +42,6 @@ public class ProjectModel
     [Range(typeof(bool), "false", "true")]
     public bool Completed { get; set; }
 
-    [RegularExpression(@"^\$?[0-9,\.]+", ErrorMessage = "Field must only contain digits, decimal points (optional) and currency symbol (optional).")]
+    [RegularExpression(@"^[0-9]+(\.\d{3})*(\.\d+)?$", ErrorMessage = "Number should be either only digits or in currency format e.g. \"2.500.000\"")]
     public string? Budget { get; set; }
 }

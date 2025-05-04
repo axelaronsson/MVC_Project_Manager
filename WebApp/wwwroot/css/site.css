@@ -19,7 +19,8 @@ a {
     }
 }
 
-.field-validation-error {
+span[class*="field-validation"],
+.notification.error {
     color: red;
 }
 
@@ -145,6 +146,12 @@ button, .menu-item {
         position: absolute;
         right: 20px;
         top: 20px;
+        cursor: pointer;
+    }
+
+    #close-update {
+        position: absolute;
+        right: 30px;
         cursor: pointer;
     }
 
