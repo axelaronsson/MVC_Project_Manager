@@ -14,64 +14,64 @@ namespace WebApp.Controllers
             var project = new ProjectModel
             {
                 Id = 1,
-                Name = "Website Redesign",
-                Company = "GitLab Inc.",
+                ProjectName = "Website Redesign",
+                Client = "GitLab Inc.",
                 Description = "It is necessary to develop a website redesign in a corporate style."
             };
 
             var project2 = new ProjectModel
             {
                 Id = 2,
-                Name = "Landing Page",
-                Company = "Bitbucket, Inc.",
+                ProjectName = "Landing Page",
+                Client = "Bitbucket, Inc.",
                 Description = "It is necessary to create a landing together with the development of design."
             };
 
             var project3 = new ProjectModel
             {
                 Id = 3,
-                Name = "Parser Development",
-                Company = "Driveway, Inc.",
+                ProjectName = "Parser Development",
+                Client = "Driveway, Inc.",
                 Description = "Create a mobile application on iOS and Android devices."
             };
 
             var project4 = new ProjectModel
             {
                 Id = 4,
-                Name = "Parser Development",
-                Company = "Driveway, Inc.",
+                ProjectName = "Parser Development",
+                Client = "Driveway, Inc.",
                 Description = "Create a mobile application on iOS and Android devices."
             };
 
             var project5 = new ProjectModel
             {
                 Id = 5,
-                Name = "Parser Development",
-                Company = "Driveway, Inc.",
+                ProjectName = "Parser Development",
+                Client = "Driveway, Inc.",
                 Description = "Create a mobile application on iOS and Android devices."
             };
 
             var project6 = new ProjectModel
             {
                 Id = 6,
-                Name = "Parser Development",
-                Company = "Driveway, Inc.",
+                ProjectName = "Parser Development",
+                Client = "Driveway, Inc.",
                 Description = "Create a mobile application on iOS and Android devices."
             };
 
             var project7 = new ProjectModel
             {
                 Id = 7,
-                Name = "Parser Development",
-                Company = "Driveway, Inc.",
+                ProjectName = "Parser Development",
+                Client = "Driveway, Inc.",
                 Description = "Create a mobile application on iOS and Android devices."
             };
 
             var project8 = new ProjectModel
             {
                 Id = 8,
-                Name = "Parser Development",
-                Company = "Driveway, Inc.",
+                ProjectName = "Parser Development",
+                Client = "Driveway, Inc.",
                 Description = "Create a mobile application on iOS and Android devices."
             };
 
@@ -86,7 +86,20 @@ namespace WebApp.Controllers
                 //project8,
             };
 
+            ViewBag.isCreated = TempData["isCreated"];
+
             return View(list);
+        }
+
+        [HttpPost]
+        public IActionResult Create(ProjectModel project)
+        {
+            Console.WriteLine(project.Description);
+            if (project.Client != null) { 
+                TempData["isCreated"] = true;
+                return RedirectToAction("Index", "Home");
+            }
+            return View(project);
         }
 
         public IActionResult Privacy()

@@ -3,6 +3,9 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div class="popup-form" style="display:none">
+    @await Html.PartialAsync("Partials/Create", new ProjectModel())
+</div>
 <div id="projects-view">
     <div class="project-container">
         <div class="sidebar">
@@ -15,6 +18,9 @@
 
         <div class="workspace">
             <div class="menu-bar">
+                @if (ViewBag.isCreated != null) {
+                    <p>Is created</p>
+                }
                 <div class="handle-account">
                     <img src="/Setting.png" />
                     <span></span>
@@ -34,7 +40,7 @@
 
             <div class="add-section">
                 <h2 class="heading">Projects</h2>
-                <button class="add-btn"><img class="plus" src="/Plus.svg" /> Add Project</button>
+                <button onclick="toggleCreate()" class="add-btn"><img class="plus" src="/Plus.svg" /> Add Project</button>
             </div>
 
             <div class="filter-bar">
@@ -50,8 +56,8 @@
                             <div class="top-info">
                                 <img src="/Image.svg" />
                                 <div>
-                                    <h6>@product.Name</h6>
-                                    <p>@product.Company</p>
+                                    <h6>@product.ProjectName</h6>
+                                    <p>@product.Client</p>
                                 </div>
                             </div>
                             <p class="description">@product.Description</p>
@@ -79,6 +85,10 @@
     <script>
         const userBtn = document.querySelector("#user-btn");
         const accountCard = document.querySelector(".account-options");
+        const createModal = document.querySelector(".popup-form");
+        const closeBtn = document.querySelector('#close');
+
+
         accountCard.style.display = "none"
         userBtn.addEventListener("click", () => {
             if (accountCard.style.display === "none") {
@@ -89,16 +99,47 @@
         });
 
         const highLight = (e) => {
-            filterAnchors.forEach(el => el.classList.remove("highlighted"));
-            console.log(e.target);
+            filterTabs.forEach(el => el.classList.remove("highlighted"));
             e.target.classList.add("highlighted");
         }
 
-        const filterAnchors = document.querySelectorAll(".filter-tab");
-        filterAnchors.forEach(el => el.addEventListener("click", highLight));
-        // filterAnchors.map(anc => anc.addEventListener("click", highLight));
-        
+        const filterTabs = document.querySelectorAll(".filter-tab");
+        filterTabs.forEach(el => el.addEventListener("click", highLight));
 
+
+
+        createModal.style.display = "none"
+        const toggleCreate = (e) => {
+            if (createModal.style.display === "none") {
+                createModal.style.display = "block";
+            } else {
+                createModal.style.display = "none"
+            }
+        }
+
+        closeBtn.addEventListener("click", toggleCreate);
+
+
+        const toolbarOptions = [
+          ['bold', 'italic', 'underline'],
+          [{ align: '' }, { align: 'center' }, { align: 'right' }],
+          [{ 'list': 'bullet'}, { 'list': 'ordered' }],
+          ['link'],
+        ];
+
+        const quill = new Quill('#editor', {
+            modules: {
+              toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+
+        quill.on('editor-change', (eventName) => {
+            const html = quill.getSemanticHTML(0);
+            console.log(html);
+            const inputText = document.getElementById('wysiwyg-content');
+            inputText.value = html;
+        });
 
     </script>
 }

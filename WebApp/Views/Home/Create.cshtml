@@ -1,0 +1,79 @@
+﻿@model ProjectModel
+@{
+	ViewData["Title"] = "Create";
+}
+
+<div id="create" class="popup">
+	<div class="wrapper">
+		<img id="close" src="/X.svg" />
+		<h3 class="heading">Add Project</h3>
+		<img class="logo-img" src="/Image.svg" />
+		<div class="form-container">
+			<form id="signup-form" asp-action="Create" asp-controller="Home" method="post" novalidate>
+				<div class="form-group signup">
+					<label asp-for="ProjectName">Project Name</label>
+					<div class="field-group">
+						<input asp-for="ProjectName" />
+						<span asp-validation-for="ProjectName"></span>
+						<span class="js-validation">Required field</span>
+					</div>
+				</div>
+
+				<div class="form-group signup">
+					<label asp-for="Client">Client Name</label>
+					<div class="field-group">
+						<input asp-for="Client" />
+						<span asp-validation-for="Client"></span>
+						<span class="js-validation">Required field</span>
+					</div>
+				</div>
+
+				@* 				<div class="wysiwyg-container" style="display: flex;flex-direction: column-reverse;">
+					<div id="editor">
+						@if (Model != null)
+							@Html.Raw(Model.Description)
+
+					</div>
+				</div> *@
+
+				<div class="form-group">
+					<label asp-for="Description"></label>
+
+					@* <textarea asp-for="ProjectDescription"></textarea> *@
+
+					<input type="hidden" id="wysiwyg-content" asp-for="Description" />
+					<div class="wysiwyg-container" style="display: flex;flex-direction: column-reverse;">
+						<div id="editor">
+							@if (Model != null)
+								@Html.Raw(Model.Description)
+
+						</div>
+					</div>
+
+				</div>
+
+				<button type="submit" class="btn btn-submit btn-primary">Create</button>
+				<a asp-area="" asp-controller="Home" asp-action="Index">Cancel</a>
+			</form>
+		</div>
+	</div>
+</div>
+
+@* @section Scripts {
+	<script>
+
+		const toolbarOptions = [
+		  ['bold', 'italic', 'underline'],
+		  [{ align: '' }, { align: 'center' }, { align: 'right' }],
+		  [{ 'list': 'bullet'}, { 'list': 'ordered' }],
+		  ['link'],
+		];
+
+		const quill = new Quill('#editor', {
+			modules: {
+			  toolbar: toolbarOptions
+			},
+			theme: 'snow'
+		});
+	</script>
+} *@

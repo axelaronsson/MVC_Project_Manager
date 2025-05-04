@@ -6,6 +6,10 @@ html {
     font-family: "Nunito", sans-serif;
 }
 
+main {
+    position: relative;
+}
+
 a {
     text-decoration: none;
     color: var(--primary-blue);
@@ -43,9 +47,96 @@ button, .menu-item {
 
 .js-validation {
     display: none;
+    color: red;
 }
 
-#signin, #signup {
+.wysiwyg-container {
+    padding-top: 10px;
+
+    #editor {
+        min-height: 120px;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+        border: 1px solid #EBEEF2;
+
+        p {
+            font-weight: 400;
+        }
+
+        span {
+            padding: 0;
+        }
+    }
+    .ql-stroke {
+        stroke: #1A1926 !important;
+        stroke-width: 1.5 !important;
+    }
+
+    .ql-toolbar {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        border-bottom-right-radius: 14px;
+        border-bottom-left-radius: 14px;
+
+        &.ql-snow {
+            border: 1px solid #EBEEF2 !important;
+        }
+
+        button {
+            border-radius: 0;
+            box-shadow: none;
+        }
+    }
+}
+
+#create.popup {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(48, 48, 48, 0.5);
+    z-index: 1;
+
+    .wrapper {
+        width: 550px;
+        padding-top: 30px;
+    }
+
+    a {
+        width: 100%;
+        display: inline-block;
+        margin: 10px 0px;
+        padding: 10px;
+        border: 1px solid var(--primary-blue);
+        border-radius: 14px;
+        text-align: center;
+    }
+
+    h3 {
+        padding-left: 30px;
+        text-align: left;
+        font-size: 28px;
+    }
+    
+    form {
+        width: 490px;
+    }
+
+    #close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+    }
+
+    .logo-img {
+        height: 170px;
+        padding-top: 30px;
+        margin: auto;
+    }
+}
+
+#signin, #signup, #create {
     min-height: 100vh;
     display: flex;
     padding: 40px 0px;
@@ -86,9 +177,9 @@ button, .menu-item {
     .form-group {
         /*margin-top: 10px;*/
         margin-bottom: 24px;
-        span {
+        /*span {
             color: red;
-        }
+        }*/
     }
 
     .form-group.signup {
@@ -175,7 +266,7 @@ button, .menu-item {
     }
     
     .project-container {
-        min-height: 100vh;
+        min-height: 1200px;
         display: flex;
         max-width: 1440px;
         margin: auto;
