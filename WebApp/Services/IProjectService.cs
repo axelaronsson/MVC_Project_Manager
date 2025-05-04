@@ -4,9 +4,9 @@ namespace WebApp.Services
 {
     public interface IProjectService
     {
-        bool Create(ProjectModel project);
-        IEnumerable<ProjectModel> GetAllAsync(string userName);
-        ProjectModel GetProject(string userName);
-        bool Update(ProjectModel updatedEntity);
+        Task<bool> Create(ProjectModel project);
+        Task<IEnumerable<ProjectModel>> GetAllAsync(string userName);
+        Task<ProjectModel> GetProject(string userName);
+        Task<bool> Update(ProjectModel updatedEntity);
     }
 }

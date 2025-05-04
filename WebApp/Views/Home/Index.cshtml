@@ -7,7 +7,6 @@
     @await Html.PartialAsync("Partials/_Create", new ProjectModel())
 </div>
 <div class="update-form" style="display:none">
-    @* @await Html.PartialAsync("Partials/_Update", new ProjectModel()) *@
 </div>
 <div id="projects-view">
     <div class="project-container">
@@ -16,14 +15,10 @@
             <div class="btn-background">
 
             </div>
-            @* <button>Projects</button> *@
         </div>
 
         <div class="workspace">
             <div class="menu-bar">
-                @*    @if (ViewBag.isCreated != null) {
-                    <p>Is created</p>
-                } *@
                 <div class="handle-account">
                     <img src="/Setting.png" />
                     <span></span>
@@ -79,7 +74,7 @@
                                 <hr />
                                 <div class="menu-item">
                                     <img class="opt-img" src="~/trashcan.svg" />
-                                    <button onclick="deleteProject(@project.Id)" class="delete">Delete Project</button>
+                                    <button class="delete">Delete Project</button>
                                 </div>
                             </div>
                             <div class="top-info">
@@ -120,7 +115,6 @@
         const updateModal = document.querySelector(".update-form");
         accountCard.style.display = "none"
         formModal.style.display = "none"
-        // updateModal.style.display = "none"
 
 
         const highLight = (e) => {
@@ -143,7 +137,6 @@
         }
 
         const toggleEdit = (elemId) => {
-            console.log(elemId);
             const el = document.querySelector("#opt-" + elemId);
             if (el.style.display === "none") {
                 el.style.display = "block";
@@ -156,18 +149,11 @@
         closeBtn.addEventListener("click", () => toggleModal(".create-form"));
         userBtn.addEventListener("click", () => toggleModal(".account-options"));
 
-        // const cards = document.querySelectorAll(".card-wrapper");
-        // cards.forEach(el => el.addEventListener("click", () => {
-        //     console.log(el.getAttribute("id"));
-        //     getUpdateData(el.getAttribute("id"));
-
-        // }));
 
         const getUpdateData = (id) => {
             fetch('/Home/GetUpdateForm/' + id)
                 .then((response) => response.text())
                 .then((body) => {
-                    // console.log(body)
                     document.querySelector('.update-form').innerHTML = body;
                 })
                 .then(() => {
@@ -198,7 +184,6 @@
 
         quill.on('editor-change', (eventName) => {
             const html = quill.getSemanticHTML(0);
-            // console.log(html);
             const inputText = document.getElementById('wysiwyg-content');
             inputText.value = html;
         });
@@ -232,7 +217,6 @@
 
             quill_2.on('editor-change', (eventName) => {
                 const html = quill_2.getSemanticHTML(0);
-                // console.log(html);
                 const inputText = document.getElementById('wysiwyg-content-update');
                 inputText.value = html;
             });
@@ -274,12 +258,6 @@
             }
         }
 
-        const deleteProject = (id) => {
-            fetch('/Home/Delete/' + id, { method: "DELETE" })
-                .then((response) => {
-                    console.log(response)
-                })
-        }
 
         const initUpdateValidation = () => {
             const checkUpdateBudget = debounce(validateCreate, 1000);
@@ -293,16 +271,12 @@
 
         const validateCreate = (e, cName) => {
             const field = cName ? cName : e.target.name;
-            console.log("validateCreate");
             let errMsg = document.querySelector(`span[class*="${field} field-validation"]`);
 
 
             if (field === "Budget" || field === "update-Budget") {
-                console.log("1st cond budget")
                 const budgetPattern = /^[0-9]+(\.\d{3})*(\.\d+)?$/
-                console.log(e.target.value);
                 if (!budgetPattern.test(e.target.value) && e.target.value !== "") {
-                    // console.log("budgetErrMSg", errMsg);
                     errMsg.innerHTML = 'Number should be either only digits or in currency format e.g. "2.500.000"';
                 } else {
                     errMsg.innerHTML = "";

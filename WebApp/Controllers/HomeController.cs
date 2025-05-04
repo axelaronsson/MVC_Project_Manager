@@ -15,84 +15,59 @@ namespace WebApp.Controllers
         private readonly IProjectService _projectService = projectService;
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            var userId = _userManager.GetUserId(User);
             var userName = _userManager.GetUserName(User)!;
-            var projects = _projectService.GetAllAsync(userName);
-            Console.WriteLine(userId);
-            ViewBag.isCreated = TempData["isCreated"];
+            var projects = await _projectService.GetAllAsync(userName);
 
             return View(projects);
         }
 
         [HttpPost]
-        public IActionResult Create(ProjectModel project)
+        [Authorize]
+        public async Task<IActionResult> Create(ProjectModel project)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    bool created = project.Completed;
-                    TempData["isCreated"] = true;
-                    _projectService.Create(project);
+                var result = await _projectService.Create(project);
+                if (result)
                     return RedirectToAction("Index", "Home");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
                 return StatusCode(500);
             }
 
-
-            //var newProject = new ProjectModel();
             return View(project);
         }
 
         [Route("Home/GetUpdateForm/{id}")]
-        public IActionResult GetUpdateForm(string id)
+        [Authorize]
+        public async Task<IActionResult> GetUpdateForm(string id)
         {
-            var project = _projectService.GetProject(id);
+            var project = await _projectService.GetProject(id);
             if (project != null)
             {
                 return PartialView("Partials/_Update", project);
             }
 
-            return BadRequest();
+            return StatusCode(404);
         }
 
         [HttpPost]
-        public IActionResult Update(ProjectModel project)
+        [Authorize]
+        public async Task<IActionResult> Update(ProjectModel project)
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    //throw new InvalidOperationException("error blabla");
-                    var result = _projectService.Update(project);
-                    if (result)
-                        return RedirectToAction("Index", "Home");
-                    return StatusCode(404);
-                    
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e);
-                    return StatusCode(500);
-                }
+                //throw new InvalidOperationException("error blabla");
+                var result = await _projectService.Update(project);
+                if (result)
+                    return RedirectToAction("Index", "Home");
+  
+                return StatusCode(500);
             }
 
             return View(project);
 
-        }
-
-        [HttpDelete]
-        [Route("Home/Delete/{id}")]
-        public IActionResult Delete(int id)
-        {
-            return StatusCode(200);
         }
 
 

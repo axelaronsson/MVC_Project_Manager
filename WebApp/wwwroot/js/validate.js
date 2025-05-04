@@ -27,7 +27,6 @@
 	else if (patterns[field] && !patterns[field].test(e.target.value)) {
 		errMsg.innerHTML = messages[field];
 		if (field === "Password") {
-			console.log("field", field)
 			pswrd.removeEventListener("focusout", validate);
 			pswrd.addEventListener("input", validate);
 		}

@@ -8,45 +8,73 @@ using WebApp.Models;
 
 namespace WebApp.Services;
 
-public class ProjectService(DataContext dataContext, UserManager<AppUser> userManager) : IProjectService
+public class ProjectService(DataContext dataContext) : IProjectService
 {
     private readonly DataContext _dataContext = dataContext;
-    //private List<ProjectModel> _projects = [];
 
-    public bool Create(ProjectModel project)
+    public async Task<bool> Create(ProjectModel project)
     {
-        var projectEntity = ProjectFactory.Create(project);
-        //_dataContext.Projects.All(x => x.Id == project.Id);
-        _dataContext.Projects.Add(projectEntity);
-        _dataContext.SaveChanges();
-        return true;
-    }
-
-    public bool Update(ProjectModel updatedEntity)
-    {
-        var existingEntity = _dataContext.Projects.FirstOrDefault(p => p.Id == updatedEntity.Id);
-
-        if (existingEntity != null)
+        try
         {
-            //throw new InvalidOperationException("error blabla");
-            _dataContext.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
-            _dataContext.SaveChanges();
+            var projectEntity = ProjectFactory.Create(project);
+            await _dataContext.Projects.AddAsync(projectEntity);
+            await _dataContext.SaveChangesAsync();
             return true;
-
         }
-        return false;
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            return false;
+        }
+
     }
 
-    public ProjectModel GetProject(string id)
+    public async Task<bool> Update(ProjectModel updatedProject)
     {
-        var entity = _dataContext.Projects.FirstOrDefault(p => p.Id.ToString() == id)!;
-        return ProjectFactory.Create(entity);
+        try
+        {
+            var existingEntity = await _dataContext.Projects.FirstOrDefaultAsync(p => p.Id == updatedProject.Id);
+
+            if (existingEntity != null)
+            {
+                _dataContext.Entry(existingEntity).CurrentValues.SetValues(updatedProject);
+                await _dataContext.SaveChangesAsync();
+                return true;
+
+            }
+            return false;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            return false;
+        }
+
     }
 
-    public IEnumerable<ProjectModel> GetAllAsync(string userName)
+    public async Task<ProjectModel> GetProject(string id)
     {
-        var entities = _dataContext.Projects.Where(p => p.UserName == userName);
-        var projectDtos = entities.Select(p => ProjectFactory.Create(p));
-        return projectDtos;
+        try
+        {
+            var entity = await _dataContext.Projects.FirstOrDefaultAsync(p => p.Id.ToString() == id)!;
+            if (entity != null)
+                return ProjectFactory.Create(entity);
+
+            return null!;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            return null!;
+        }
+
+    }
+
+    public async Task<IEnumerable<ProjectModel>> GetAllAsync(string userName)
+    {
+
+        var entities = await _dataContext.Projects.Where(p => p.UserName == userName).ToListAsync();
+        var projects = entities.Select(p => ProjectFactory.Create(p));
+        return projects;
     }
 }

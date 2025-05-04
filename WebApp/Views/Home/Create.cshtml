@@ -16,7 +16,6 @@
 					<div class="field-group">
 						<input asp-for="ProjectName" />
 						<span class="ProjectName" asp-validation-for="ProjectName"></span>
-						@* <span class="js-validation">Required field</span> *@
 					</div>
 				</div>
 
@@ -25,7 +24,6 @@
 					<div class="field-group">
 						<input asp-for="Client" />
 						<span class="Client" asp-validation-for="Client"></span>
-						@* <span class="js-validation">Required field</span> *@
 					</div>
 				</div>
 
@@ -53,7 +51,6 @@
 								<input id="start-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
 							}
 							<span asp-validation-for="StartDate"></span>
-							@* <span class="js-validation">Required field</span> *@
 						</div>
 					</div>
 					<div class="form-group create">
@@ -69,7 +66,6 @@
 								<input id="end-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
 							}
 							<span asp-validation-for="EndDate"></span>
-							@* <span class="js-validation">Required field</span> *@
 						</div>
 					</div>
 				</div>
@@ -80,7 +76,6 @@
 						<input asp-for="Completed" />
 						<span asp-validation-for="Completed"></span>
 					</div>
-					@* <span class="js-validation">You need to approve Terms & Conditions</span> *@
 				</div>
 
 				<div class="form-group create">
@@ -88,7 +83,6 @@
 					<div class="field-group">
 						<input asp-for="Budget" />
 						<span class="Budget" asp-validation-for="Budget"></span>
-						@* <span class="js-validation">Required field</span> *@
 					</div>
 				</div>
 
@@ -121,7 +115,6 @@
 
 		quill.on('editor-change', (eventName) => {
 			const html = quill.getSemanticHTML(0);
-			console.log(html);
 			const inputText = document.getElementById('wysiwyg-content');
 			inputText.value = html;
 		});
@@ -146,16 +139,12 @@
 
 		const validateCreate = (e, cName) => {
 			const field = cName ? cName : e.target.name;
-			console.log("validateCreate");
 			let errMsg = document.querySelector(`span[class*="${field} field-validation"]`);
 
 
 			if (field === "Budget" || field === "update-Budget") {
-				console.log("1st cond budget")
 				const budgetPattern = /^[0-9]+(\.\d{3})*(\.\d+)?$/
-				console.log(e.target.value);
 				if (!budgetPattern.test(e.target.value) && e.target.value !== "") {
-					// console.log("budgetErrMSg", errMsg);
 					errMsg.innerHTML = 'Number should be either only digits or in currency format e.g. "2.500.000"';
 				} else {
 					errMsg.innerHTML = "";
