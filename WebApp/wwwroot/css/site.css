@@ -59,6 +59,11 @@ button, .menu-item {
         border-top-right-radius: 14px;
         border: 1px solid #EBEEF2;
 
+        div[data-placeholder="Type something.."] {
+            font-family: "Nunito";
+            font-size: 15px;
+        }
+
         p {
             font-weight: 400;
         }
@@ -163,6 +168,11 @@ button, .menu-item {
         background-color: white;
     }
 
+    .date-wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
     .form-container {
         display: flex;
         justify-content: center;
@@ -182,7 +192,7 @@ button, .menu-item {
         }*/
     }
 
-    .form-group.signup {
+    .form-group.signup, .form-group.create {
         margin-bottom: 6px;
 
         &.terms {

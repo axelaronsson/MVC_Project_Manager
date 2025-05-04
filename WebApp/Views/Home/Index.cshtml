@@ -4,7 +4,7 @@
 }
 
 <div class="popup-form" style="display:none">
-    @await Html.PartialAsync("Partials/Create", new ProjectModel())
+    @await Html.PartialAsync("Partials/_Create", new ProjectModel())
 </div>
 <div id="projects-view">
     <div class="project-container">
@@ -131,6 +131,7 @@
             modules: {
               toolbar: toolbarOptions
             },
+            placeholder: 'Type something..',
             theme: 'snow'
         });
 
@@ -141,5 +142,22 @@
             inputText.value = html;
         });
 
+
+        $(document).ready(function () {
+
+            $(function () {
+                $("#start-date").datepicker(
+                    {
+                        dateFormat: "MM dd, yy"
+                    }
+                );
+
+                $("#end-date").datepicker(
+                    {
+                        dateFormat: "MM dd, yy"
+                    }
+                );
+            });
+        })
     </script>
 }

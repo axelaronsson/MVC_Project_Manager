@@ -29,6 +29,7 @@ builder.Services.ConfigureApplicationCookie(x =>
 });
 
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ProjectService>();
 
 
 builder.Services.AddControllersWithViews();

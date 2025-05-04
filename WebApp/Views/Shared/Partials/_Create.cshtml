@@ -9,8 +9,8 @@
 		<h3 class="heading">Add Project</h3>
 		<img class="logo-img" src="/Image.svg" />
 		<div class="form-container">
-			<form id="signup-form" asp-action="Create" asp-controller="Home" method="post" novalidate>
-				<div class="form-group signup">
+			<form id="" asp-action="Create" asp-controller="Home" method="post" novalidate>
+				<div class="form-group create">
 					<label asp-for="ProjectName"></label>
 					<div class="field-group">
 						<input asp-for="ProjectName" />
@@ -19,7 +19,7 @@
 					</div>
 				</div>
 
-				<div class="form-group signup">
+				<div class="form-group create">
 					<label asp-for="Client"></label>
 					<div class="field-group">
 						<input asp-for="Client" />
@@ -27,14 +27,6 @@
 						<span class="js-validation">Required field</span>
 					</div>
 				</div>
-
-				@* 				<div class="wysiwyg-container" style="display: flex;flex-direction: column-reverse;">
-					<div id="editor">
-						@if (Model != null)
-							@Html.Raw(Model.Description)
-
-					</div>
-				</div> *@
 
 				<div class="form-group">
 					<label asp-for="Description"></label>
@@ -46,14 +38,48 @@
 						<div id="editor">
 							@if (Model != null)
 								@Html.Raw(Model.Description)
-
 						</div>
 					</div>
+				</div>
 
+				<div class="date-wrapper">
+					<div class="form-group create">
+						<label asp-for="StartDate"></label>
+						<div class="field-group">
+							<input id="start-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="StartDate" />
+							<span asp-validation-for="StartDate"></span>
+							<span class="js-validation">Required field</span>
+						</div>
+					</div>
+					<div class="form-group create">
+						<label asp-for="EndDate"></label>
+						<div class="field-group">
+							<input id="end-date" type="text" value="@DateTime.Now.ToString("MMMM dd, yyyy")" asp-for="EndDate" />
+							<span asp-validation-for="EndDate"></span>
+							<span class="js-validation">Required field</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group signup terms">
+					<label asp-for="Completed"></label>
+					<div class="field-group terms">
+						<input asp-for="Completed" />
+						<span asp-validation-for="Completed"></span>
+					</div>
+					<span class="js-validation">You need to approve Terms & Conditions</span>
+				</div>
+
+				<div class="form-group create">
+					<label asp-for="Budget"></label>
+					<div class="field-group">
+						<input asp-for="Budget" />
+						<span asp-validation-for="Budget"></span>
+						<span class="js-validation">Required field</span>
+					</div>
 				</div>
 
 				<button type="submit" class="btn btn-submit btn-primary">Create</button>
-				<a asp-area="" asp-controller="Home" asp-action="Index">Cancel</a>
 			</form>
 		</div>
 	</div>
